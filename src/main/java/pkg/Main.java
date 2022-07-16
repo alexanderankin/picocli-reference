@@ -55,7 +55,16 @@ class Completion implements Runnable {
 
     @Override
     public void run() {
-        String name = AutoComplete.bash("main", new CommandLine(new Main()));
-        System.out.println(name);
+        CommandLine root = outermostParent();
+        String autoCompleteScript = AutoComplete.bash(root.getCommandName(), root);
+        System.out.println(autoCompleteScript);
+    }
+
+    private CommandLine outermostParent() {
+        CommandLine c = commandSpec.commandLine();
+        while (c.getParent() != null) {
+            c = c.getParent();
+        }
+        return c;
     }
 }
