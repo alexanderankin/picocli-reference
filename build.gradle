@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id 'application'
+    id 'com.github.johnrengelman.shadow' version '7.1.2'
 }
 
 group 'link.apcodes.picocli.autocomplete1'
@@ -7,6 +9,17 @@ version '1.0-SNAPSHOT'
 
 repositories {
     mavenCentral()
+}
+
+application {
+    mainClass.set 'pkg.Main'
+}
+
+tasks.withType(Jar) {
+    manifest {
+        attributes('Implementation-Version': project.getVersion())
+        attributes('Specification-Version': project.getVersion())
+    }
 }
 
 dependencies {
