@@ -1,2 +1,2 @@
-rootProject.name = 'picocli-autocomplete'
-
+rootProject.name = 'picocli-reference'
+include 'completion'
