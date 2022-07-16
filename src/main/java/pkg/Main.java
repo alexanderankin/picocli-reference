@@ -2,6 +2,7 @@ package pkg;
 
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
+import picocli.AutoComplete;
 import picocli.CommandLine;
 
 @Slf4j
@@ -12,6 +13,7 @@ import picocli.CommandLine;
         description = "program developed while investigating autocomplete",
         subcommands = {
                 Sub1.class,
+                Completion.class,
         }
 )
 public class Main implements Runnable {
@@ -38,5 +40,22 @@ class Sub1 implements Runnable {
     public void run() {
         log.info("hi");
         log.debug("hi from {}", this);
+    }
+}
+
+@Data
+@Slf4j
+@CommandLine.Command(name = "completion", mixinStandardHelpOptions = true)
+class Completion implements Runnable {
+    @CommandLine.Parameters(arity = "1", description = "specify which shell (only bash supported)", defaultValue = "bash")
+    String shell;
+
+    @CommandLine.Spec
+    CommandLine.Model.CommandSpec commandSpec;
+
+    @Override
+    public void run() {
+        String name = AutoComplete.bash("main", new CommandLine(new Main()));
+        System.out.println(name);
     }
 }
